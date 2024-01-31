@@ -6,26 +6,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <style>
-    .div {
-      border: 1px solid black;
-      background-color: red;
+    div {
       width: 10px;
       height: 10px;
+      background-color: red;
+      margin: 10px;
+      border: 1px solid black;
     }
   </style>
 </head>
-<body>
-
-  <div class="div"></div>
-  <div class="div"></div>
-  <div class="div"></div>
-  <div class="div"></div>
-  <div class="div"></div>
-  <div class="div"></div>
-  <div class="div"></div>
-  <div class="div"></div>
-  <div class="div"></div>
-  <div class="div"></div>
-  
+<body onload="stampa()">
+  <script>
+    function stampa() {
+      for (let i = 0; i < 10; i++) {
+        let div = document.createElement("div")
+        document.body.appendChild(div)
+      }
+    }
+  </script>
 </body>
 </html>
