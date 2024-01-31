@@ -1,1 +1,50 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .fila:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+    .quadrato {
+      width: 50px;
+      height: 50px;
+      float: left;
+    }
+    .nero {
+      background-color: black;
+    }
+    .bianco {
+      background-color: white;
+    }
+  </style>
+</head>
+<body>
+  <div id="scacchiera"></div>
+  <script>
+    function stampa() {
+      var scacchiera = document.getElementById('scacchiera')
+      for (var i = 0; i < 8; i++) {
+        var fila = document.createElement('div')
+        fila.classList.add('fila')
+        for (var j = 0; j < 8; j++) {
+          var casella = document.createElement('div')
+          casella.classList.add('casella')
+          if ((i + j) % 2 === 0) {
+            casella.classList.add('bianco')
+          } else {
+            casella.classList.add('nero')
+          }
+          fila.appendChild(casella)
+        }
+        scacchiera.appendChild(fila)
+      }
+    }
+  </script>
+</body>
+</html>
