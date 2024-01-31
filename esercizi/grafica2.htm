@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <style>
-    div {
+    .div {
       width: 10px;
       height: 10px;
       background-color: red;
@@ -16,12 +16,15 @@
   </style>
 </head>
 <body>
-  <button id="button" onclick="stampa()">Crea</button>
+  <input type="number" id="input1" placeholder="Numero div">
+  <button id="button" onclick="creadiv()">Crea</button>
   <script>
-    function stampa() {
-      for (let i = 0; i < 10; i++) {
-        let div = document.createElement("div")
-        document.body.appendChild(div)
+    function creadiv() {
+    var ndiv = document.getElementById("input1").value;
+      for (let i = 0; i < ndiv; i++) {
+        var div = document.createElement("div");
+        div.classList.add("div")
+        document.body.appendChild(div);
       }
     }
   </script>
