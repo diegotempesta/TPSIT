@@ -1,50 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Chess Board</title>
   <style>
-    .fila:after {
+    .row:after {
       content: "";
       display: table;
       clear: both;
     }
-    .quadrato {
+
+    .casella {
       width: 50px;
       height: 50px;
       float: left;
+      border: 2px solid black;
     }
-    .nero {
-      background-color: black;
+
+    .black {
+      background-color: darkgray;
     }
-    .bianco {
-      background-color: white;
+
+    .white {
+      background-color: lightgray;
     }
   </style>
 </head>
-<body>
-  <div id="scacchiera"></div>
+
+<body onload="scacchiera()">
+  <div id="scacchi">
+    <div id="fila"></div>
+  </div>
   <script>
-    function stampa() {
-      var scacchiera = document.getElementById('scacchiera')
-      for (var i = 0; i < 8; i++) {
-        var fila = document.createElement('div')
-        fila.classList.add('fila')
-        for (var j = 0; j < 8; j++) {
-          var casella = document.createElement('div')
-          casella.classList.add('casella')
-          if ((i + j) % 2 === 0) {
-            casella.classList.add('bianco')
-          } else {
-            casella.classList.add('nero')
+    function scacchiera() {
+      var board = document.getElementById('scacchi');
+      var fila = document.createElement('div')
+      fila.classList.add('row')
+      scacchi.appendChild(fila)
+      for (var i = 1; i <= 10; i++) {
+        for (var j = 1; j <= 10; j++) {
+          var div = document.createElement('div')
+          div.classList.add('casella')
+          fila.appendChild(div)
+          if ((i + j) % 2 == 1) {
+            div.classList.add('white')
           }
-          fila.appendChild(casella)
+          else {
+            div.classList.add('black')
+          }
         }
-        scacchiera.appendChild(fila)
+        var fila = document.createElement('div')
+        fila.classList.add('row')
+        scacchi.appendChild(fila)
       }
     }
   </script>
 </body>
+
 </html>
