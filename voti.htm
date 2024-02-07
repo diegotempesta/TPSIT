@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <!-- realizzare un programma che converte un voto in decimi in uno voto in trentesimi. inseriti 5 voti creare una funzione che si chiama minimo che
+  restituisce il voto più basso-->
+</head>
+<body>
+  <input type="number" placeholder="Voto 1" id="inputVoto1">
+  <br>
+  <input type="number" placeholder="Voto 2" id="inputVoto2">
+  <br>
+  <input type="number" placeholder="Voto 3" id="inputVoto3">
+  <br>
+  <input type="number" placeholder="Voto 4" id="inputVoto4">
+  <br>
+  <input type="number" placeholder="Voto 5" id="inputVoto5">
+  <button onclick="conversione()">Invia</button>
+  <p>Voto 1 in trentesimi: <span id="votoTrent1"></span>/30</p>
+  <p>Voto 2 in trentesimi: <span id="votoTrent2"></span>/30</p>
+  <p>Voto 3 in trentesimi: <span id="votoTrent3"></span>/30</p>
+  <p>Voto 4 in trentesimi: <span id="votoTrent4"></span>/30</p>
+  <p>Voto 5 in trentesimi: <span id="votoTrent5"></span>/30</p>
+  <p>Voto minimo in trentesimi: <span id="votominimo"></span>/30</p>
+  <script>
+    function conversione() {
+      let voto1 = document.getElementById("inputVoto1").value
+      let voto2 = document.getElementById("inputVoto2").value
+      let voto3 = document.getElementById("inputVoto3").value
+      let voto4 = document.getElementById("inputVoto4").value
+      let voto5 = document.getElementById("inputVoto5").value
+      let votoTrentesimi1 = voto1 * 3
+      let votoTrentesimi2 = voto2 * 3
+      let votoTrentesimi3 = voto3 * 3
+      let votoTrentesimi4 = voto4 * 3
+      let votoTrentesimi5 = voto5 * 3
+      document.getElementById("votoTrent1").innerHTML = votoTrentesimi1
+      document.getElementById("votoTrent2").innerHTML = votoTrentesimi2
+      document.getElementById("votoTrent3").innerHTML = votoTrentesimi3
+      document.getElementById("votoTrent4").innerHTML = votoTrentesimi4
+      document.getElementById("votoTrent5").innerHTML = votoTrentesimi5
+      let votomin = Math.min(voto1, voto2, voto3, voto4, voto5)
+      document.getElementById("votominimo").innerHTML = votomin * 3;
+    }
+  </script>
+</body>
+</html>
