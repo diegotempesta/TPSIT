@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chess Board</title>
+  <style>
+    .row:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+
+    .casella1 {
+      width: 10px;
+      height: 10px;
+      float: left;
+      border: 2px solid black;
+    }
+    
+    .casella2 {
+      width: 20px;
+      height: 20px;
+      float: left;
+      border: 2px solid black;
+    }
+
+    .black {
+      background-color: darkgray;
+    }
+
+    .white {
+      background-color: lightgray;
+    }
+  </style>
+</head>
+
+<body onload="scacchiera()">
+  <div id="scacchi">
+    <div id="fila"></div>
+  </div>
+  <script>
+    function scacchiera() {
+      var board = document.getElementById('scacchi');
+      var fila = document.createElement('div')
+      fila.classList.add('row')
+      scacchi.appendChild(fila)
+      for (var i = 1; i <= 10; i++) {
+        for (var j = 1; j <= 10; j++) {
+          var div = document.createElement('div')
+          fila.appendChild(div)
+          if ((i + j) % 2 == 1) {
+            div.classList.add('white', 'casella1')
+          }
+          else {
+            div.classList.add('black', 'casella2')
+          }
+        }
+        var fila = document.createElement('div')
+        fila.classList.add('row')
+        scacchi.appendChild(fila)
+      }
+    }
+  </script>
+</body>
+
+</html>
