@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <input type="number" placeholder="Peso">
+  <button onclick="calcolapeso()">Calcola</button>
+  <p>Peso su mercurio: <span id="p1"></span></p>
+  <p>Peso su venere: <span id="p2"></span></p>
+  <p>Peso sulla terra: <span id="p3"></span></p>
+  <p>Peso su marte: <span id="p4"></span></p>
+  <p>Peso su giove: <span id="p5"></span></p>
+  <p>Peso su saturno: <span id="p6"></span></p>
+  <p>Peso su urano: <span id="p7"></span></p>
+  <p>Peso su nettuno: <span id="p8"></span></p>
+  <script>
+    function calcolapeso() {
+      let peso = document.querySelector("input").value
+      let mercurio = peso * 3.7 / 9.81
+      let venere = peso * 8.87 / 9.81
+      let marte = peso * 3.71 / 9.81
+      let giove = peso * 24.79 / 9.81
+      let saturno = peso * 10.44 / 9.81
+      let urano = peso * 8.87 / 9.81
+      let nettuno = peso * 11.15 / 9.81
+      document.getElementById("p1").innerHTML = mercurio
+      document.getElementById("p2").innerHTML = venere
+      document.getElementById("p3").innerHTML = peso
+      document.getElementById("p4").innerHTML = marte
+      document.getElementById("p5").innerHTML = giove
+      document.getElementById("p6").innerHTML = saturno
+      document.getElementById("p7").innerHTML = urano
+      document.getElementById("p8").innerHTML = nettuno
+    }
+  </script>
+</body>
+</html>
