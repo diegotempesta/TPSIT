@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <p id="out">10</p>
+  <button onclick="button1()">Aggiungi 2</button>
+  <button onclick="button2()">Aggiungi 3</button>
+  <button onclick="button3()">Aggiungi 7</button>
+  <script>
+    let n = 10
+    let i = 0
+    let j = 0
+    let k = 0
+    function button1() {
+      if (i == 0) {
+        document.getElementById("out").innerHTML = n
+        i++
+      }
+      else {
+        n += 2
+        document.getElementById("out").innerHTML = n
+      }
+    }
+    function button2() {
+      if (j == 0) {
+        document.getElementById("out").innerHTML = n
+        j++
+      }
+      else {
+        n += 3
+        document.getElementById("out").innerHTML = n
+      }
+    }
+    function button3() {
+      n += 7
+      document.getElementById("out").innerHTML = n
+    }
+  </script>
+</body>
+</html>
