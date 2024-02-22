@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <p>L'IMC (Indice di Massa Corporea) è utilizzato per classificare una persona in base al peso e all'altezza.<br>
+     Si calcola dividendo il peso per l'altezza al quadrato. Il valore ideale è tra 20 e 25.</p>
+  <input type="number" placeholder="Peso (kg)" id="inputPeso">
+  <br>
+  <input type="number" placeholder="Altezza (m)" id="inputAlt">
+  <button onclick="calcola()">Calcola IMC</button>
+  <p>IMC: <span id="indice"></span></p>
+  <p id="classificazione"></p>
+  <script>
+    function calcola() {
+      let peso = document.getElementById("inputPeso").value
+      let altezza = document.getElementById("inputAlt").value
+      let imc = peso / (altezza ^ 2)
+      document.getElementById("indice").innerHTML = imc
+      if (imc < 18.5) {
+        document.getElementById("classificazione").innerHTML = "Sottopeso"
+      } 
+      else if (imc < 25) {
+        document.getElementById("classificazione").innerHTML = "Normopeso"
+      } 
+      else if (imc < 30) {
+        document.getElementById("classificazione").innerHTML = "Sovrappeso"
+      } 
+      else {
+        document.getElementById("classificazione").innerHTML = "Obesità"
+      }
+    }
+  </script>
+</body>
+</html>
