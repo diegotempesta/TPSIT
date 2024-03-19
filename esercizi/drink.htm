@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <p id="lista"></p>
+  <button onclick="aggiungi()">Aggiungi bevanda</button>
+  <button onclick="cancella()">Cancella bevanda</button>
+  <button onclick="conta()">Conta bevande</button>
+  <button onclick="ordina()">Ordina bevanda</button>
+  <p>Numero bevande: <span id="length"></span></p>
+  <p>Carrello: <span id="carrello"></span></p>
+  <script>
+    const drinks = ["Coca Cola", "Limonata", "Fanta", "Sprite", "Acqua naturale", "Acqua frizzante", "Martini", "Limoncello", "Birra", "Sanbuca"];
+    const cart = [];
+    let i = 0
+    document.getElementById("lista").innerHTML = drinks.join(", ")
+
+    function aggiungi() {
+      let drink = prompt("Inserisci il nome della bevanda da aggiungere alla lista di bevande")
+      drinks.push(drink)
+      document.getElementById("lista").innerHTML = drinks.join(", ")
+    }
+
+    function cancella() {
+      if (i == 0) {
+        alert("Verra cancellata l'ultima bevanda")
+        i++
+      }
+      drinks.pop()
+      document.getElementById("lista").innerHTML = drinks.join(", ")
+    }
+
+    function conta() {
+      document.getElementById("length").innerHTML = drinks.length
+    }
+
+    function ordina() {
+      let drink = prompt("Inserisci la bevanda che vuoi ordinare")
+      for (let i = 0; i < drinks.length; i++) {
+        if (drinks[i] == drink) {
+          cart.push(drink)
+          document.getElementById("carrello").innerHTML = cart.join(", ")
+        }
+      }
+    }
+  </script>
+</body>
+
+</html>
