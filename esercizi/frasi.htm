@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+  <html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>replit</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  </head>
+  <body>
+    <div class="container">
+      <h1>Generatore di frasi</h1>
+      <p>Inserisci le parole nei campi sottostanti e clicca sui pulsanti per aggiungerle agli array. Quindi, clicca sul pulsante "Crea frasi" per generare frasi dagli array.</p>
+      <form>
+        <div class="form-group">
+          <label for="subject">Soggetto:</label>
+          <input type="text" class="form-control" id="subject">
+          <button type="button" class="btn btn-primary" id="add-subject">Aggiungi</button>
+        </div>
+        <div class="form-group">
+          <label for="verb">Verbo:</label>
+          <input type="text" class="form-control" id="verb">
+          <button type="button" class="btn btn-primary" id="add-verb">Aggiungi</button>
+        </div>
+        <div class="form-group">
+          <label for="complement">Complemento:</label>
+          <input type="text" class="form-control" id="complement">
+          <button type="button" class="btn btn-primary" id="add-complement">Aggiungi</button>
+        </div>
+        <button type="button" class="btn btn-success" id="create-sentences">Crea frasi</button>
+      </form>
+      <div id="sentences"></div>
+    </div>
+    <script>
+      // Inizializza i tre array
+      let subjects = [];
+      let verbs = [];
+      let complements = [];
+      // Aggiungi gli event listener ai pulsanti
+      document.getElementById('add-subject').addEventListener('click', function() {
+        let subject = document.getElementById('subject').value;
+        subjects.push(subject);
+      });
+      document.getElementById('add-verb').addEventListener('click', function() {
+        let verb = document.getElementById('verb').value;
+        verbs.push(verb);
+      });
+      document.getElementById('add-complement').addEventListener('click', function() {
+        let complement = document.getElementById('complement').value;
+        complements.push(complement);
+      });
+      // Crea le frasi
+      document.getElementById('create-sentences').addEventListener('click', function() {
+        // Ottieni tutte le possibili combinazioni dei tre array
+        let sentences = [];
+        for (let i = 0; i < subjects.length; i++) {
+          for (let j = 0; j < verbs.length; j++) {
+            for (let k = 0; k < complements.length; k++) {
+              sentences.push(`${subjects[i]} ${verbs[j]} ${complements[k]}.`);
+            }
+          }
+        }
+        // Visualizza le frasi nell'interfaccia utente
+        let sentencesElement = document.getElementById('sentences');
+        sentencesElement.innerHTML = '';
+        sentences.forEach(function(sentence) {
+          sentencesElement.innerHTML += `<p>${sentence}</p>`;
+        });
+      });
+    </script>
+  </body>
+  </html>
