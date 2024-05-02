@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Div Overlap</title>
+  <style>
+    .box {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+    }
+    .blue {
+      background-color: blue;
+    }
+    .yellow {
+      background-color: yellow;
+    }
+    .red {
+      background-color: red;
+    }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+
+  <script>
+    function getRandomPosition() {
+      var container = document.getElementById('container');
+      var containerWidth = container.offsetWidth;
+      var containerHeight = container.offsetHeight;
+
+      var posX = Math.floor(Math.random() * containerWidth);
+      var posY = Math.floor(Math.random() * containerHeight);
+
+      return [posX, posY];
+    }
+
+    function createDiv(color) {
+      var div = document.createElement('div');
+      div.classList.add('box');
+      div.style.left = getRandomPosition()[0] + 'px';
+      div.style.top = getRandomPosition()[1] + 'px';
+      div.classList.add(color);
+      document.getElementById('container').appendChild(div);
+    }
+
+    function checkOverlap() {
+      var blueDiv = document.querySelector('.blue');
+      var yellowDiv = document.querySelector('.yellow');
+      var blueRect = blueDiv.getBoundingClientRect();
+      var yellowRect = yellowDiv.getBoundingClientRect();
+
+      if (!(blueRect.right < yellowRect.left ||
+            blueRect.left > yellowRect.right ||
+            blueRect.bottom < yellowRect.top ||
+            blueRect.top > yellowRect.bottom)) {
+        blueDiv.classList.add('red');
+        yellowDiv.classList.add('red');
+      }
+    }
+
+    // Create blue and yellow divs randomly after 1 second
+    setTimeout(function() {
+      createDiv('blue');
+      createDiv('yellow');
+    }, 1000);
+
+    // Check for overlap every 100 milliseconds
+    setInterval(checkOverlap, 100);
+  </script>
+</body>
+</html>
