@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <style>
+            table, td {
+                border: 1px solid black;
+                padding: 5px;
+                text-align: center;
+                border-collapse: collapse;
+            }
+        </style>
+    </head>
+    <body>
+        <script>
+            let matrice = []
+            let n = 0
+            function matrix(r, c) {
+                document.write("<table>")
+                for (let i = 0; i < r; i++) {
+                    let row = []
+                    for (let j = 0; j < c; j++) {
+                        n = Math.floor(Math.random() * 100) + 1
+                        row.push(n)
+                    }
+                    // document.write("<div>" + row[0] + "</div><div>" + row[1] + "</div><div>" + row[2] + "</div><div>" + row[3] + "</div><div>" + row[4] + "</div><div>" + row[5] + "</div><div>" + row[6] + "</div><div>" + row[7] + "</div>")
+                    // document.write("<div>" + row.join(" ") + "</div>")
+                    document.write("<tr><td>" + row[0] + "</td><td>" + row[1] + "</td><td>" + row[2] + "</td><td>" + row[3] + "</td><td>" + row[4] + "</td><td>" + row[5] + "</td><td>" + row[6] + "</td><td>" + row[7] + "</td></tr>")
+                    matrice.push(row)
+                }
+                document.write("</table>")
+            }
+            matrix(8, 8)
+            console.log(matrice)
+        </script>
+    </body>
+</html>
