@@ -33,7 +33,7 @@
     function calcola() {
       let r = parseFloat(document.getElementById("inp").value)
       a = Math.PI * (r * r)
-      document.getElementById("area").innerHTML = a + " cm2"
+      document.getElementById("area").innerHTML = a.toFixed(2) + " cm2"
       button2.style.display = "block"
     }
     function stampa() {
