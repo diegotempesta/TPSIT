@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generatore di Numeri Casuali</title>
+    <style> /* contiene il codice per la grafica del sito web */
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        #numbers { /* con l'hashtag seleziona un'elemento in base al suo id */
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        #generate-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Generatore di Numeri Casuali</h1>
+    <button id="generate-button">Genera Numero Casuale</button> <!-- pulsante -->
+    <div id="numbers"></div>
+
+    <script>
+        // Funzione per generare un numero casuale tra 1 e 100
+        function getRandomNumber() {
+            return Math.floor(Math.random() * 100) + 1; // la funzione crea un numero da 0 a 99 e poi aggiunge 1, quindi diventa da 1 a 100
+        }
+
+        // Funzione per aggiornare il contenuto della pagina
+        function updateNumbers() {
+            const numbersDiv = document.getElementById('numbers'); // prende l'elemento con l'id "numbers"
+            const randomNumber = getRandomNumber(); // crea una variabile con un valore generato dalla funzione
+            numbersDiv.textContent = `Numero Casuale: ${randomNumber}`; // nel div scrive "Numero casuale: (numero creato dalla funzione)"
+        }
+
+        // Aggiunge un event listener al pulsante
+        document.getElementById('generate-button').addEventListener('click', updateNumbers); // fa in modo che il pulsante quando viene cliccato chiami la funzione per creare il numero e scriverlo
+    </script>
+</body>
+</html>
