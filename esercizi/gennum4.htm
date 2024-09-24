@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generatore di Numeri Casuali</title>
+    <style> /* contiene il codice per la grafica del sito web */
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        #numbers { /* con l'hashtag seleziona un'elemento in base al suo id */
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        #generate-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .box {
+            margin-left: 810px;
+            width: 250px;
+            height: 15px;
+            border: 1px solid black;
+            padding: 5px;
+            background-color: rgb(219, 218, 218);
+        }
+
+        #pod2, #diff {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Generatore di Numeri Casuali</h1>
+    <button id="generate-button">Genera Numero Casuale</button> <!-- pulsante -->
+    <div id="numbers"></div>
+    <br>
+    <div id="pod1" class="box"></div>
+    <div id="pod2" class="box"></div>
+    <div id="diff" class="box"></div>
+
+    <script>
+        // Funzione per generare un numero casuale tra 1 e 100
+        function getRandomNumber() {
+            return Math.floor(Math.random() * 100) + 1; // la funzione crea un numero da 0 a 99 e poi aggiunge 1, quindi diventa da 1 a 100
+        }
+
+        // Funzione per controllare se un numero è primo
+        function isPrime(num) {
+            if (num <= 1) return false; // 0 e 1 non sono primi
+
+            for (let i = 2; i <= Math.sqrt(num); i++) {
+                if (num % i === 0) return false; // Divisibile per un numero diverso da 1 e se stesso
+            }
+            
+            return true; // È primo
+        }
+
+        // Funzione per aggiornare il contenuto della pagina
+        function updateNumbers() {
+            const numbersDiv = document.getElementById('numbers'); // prende l'elemento con l'id "numbers"
+            const parioDisp = document.getElementById('pod1');
+            const parioDisp2 = document.getElementById('pod2');
+            const diff = document.getElementById('diff');
+            const randomNumber = getRandomNumber(); // crea una variabile con un valore generato dalla funzione
+            const randomNumber2 = getRandomNumber(); // crea una variabile con un valore generato dalla funzione
+
+            numbersDiv.textContent = `Numeri Casuali: ${randomNumber}, ${randomNumber2}`; // nel div scrive "Numeri casuali: (numeri creati dalla funzione)"
+
+            if (randomNumber % 2 == 0) { // se il numero e' pari
+                parioDisp.textContent = '1° numero: pari' // scrive che e' pari nel div
+            }
+            else { // se e' dispari
+                parioDisp.textContent = '1° numero: dispari' // scrive che e' dispari
+            }
+            if (isPrime(randomNumber) == true) { // se il numero e' primo
+                parioDisp.textContent += ' e primo' // scrive che e' primo nel div
+            }
+            else {
+                parioDisp.textContent += ' non primo' // senno' scrive che non lo e'
+            }
+
+            // stessa cosa ma per il secondo numero casuale
+            if (randomNumber2 % 2 == 0) {
+                parioDisp2.textContent = '2° numero: pari'
+            }
+            else {
+                parioDisp2.textContent = '2° numero: dispari'
+            }
+            if (isPrime(randomNumber2) == true) {
+                parioDisp2.textContent += ' e primo'
+            }
+            else {
+                parioDisp2.textContent += ' non primo'
+            }
+
+             // fa in modo che la differenza sia tra il numero piu' grande e quello piu' piccolo
+            if (randomNumber > randomNumber2) {
+                diff.textContent = `${randomNumber} - ${randomNumber2} = ${randomNumber - randomNumber2}`
+            }
+            else {
+                diff.textContent = `${randomNumber2} - ${randomNumber} = ${randomNumber2 - randomNumber}`
+            }
+        }
+
+        // Aggiunge un event listener al pulsante
+        document.getElementById('generate-button').addEventListener('click', updateNumbers); // fa in modo che il pulsante quando viene cliccato chiami la funzione per creare i numeri, scriverli ecc...
+    </script>
+</body>
+</html>
