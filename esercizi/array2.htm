@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Array in Box Div</title>
+    <style>
+        .box { /* personalizza gli elementi che hanno come classe "box" */
+            border: 1px solid red; /* bordo del div da 1 pixel rosso */
+            padding: 10px; /* il padding e' la distanza tra il bordo del div e il contenuto nel div (qui e' di 10 pixel) */
+            margin: 5px; /* il margin e' la distanza minima tra il bordo del div e gli altri elementi nella pagina web */
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <!-- questo div conterra l'array stampato-->
+    <div id="container">
+
+        esempio di stampa di un array in quadrati div nell'html
+    </div>
+
+   
+<script>
+
+function printArrayInDivs(arr) { // arr e' il parametro necessario per la funzione
+    const container = document.getElementById('container'); // prende l'elemento "container" e gli da l'etichetta "container" utilizzabile nel codice
+   
+    arr.forEach(element => { // per ogni elemento
+        const div = document.createElement('div'); // crea un div e gli da l'etichetta di "div"
+        div.classList.add('box'); // aggiunge la classe "box" al div appena creato
+        div.textContent = element; // scrive l'elemento dell'array nel div
+        container.appendChild(div); // inserisce il div nel container
+    });
+}
+
+const primes = []; // array
+
+ // Funzione per controllare se un numero è primo
+ function isPrime(num) {
+            if (num <= 1) return false; // 0 e 1 non sono primi
+            for (let i = 2; i <= Math.sqrt(num); i++) {
+                if (num % i === 0) return false; // Divisibile per un numero diverso da 1 e se stesso
+            }
+            return true; // È primo
+        }
+
+// funzione per mettere i numeri primi nell'array
+function generatePrimes(limit) {
+    for (let i = 1; i <= limit; i++) {
+        if (isPrime(i)) { //  se i e' un numero primo
+            primes.push(i); // lo mette nell'array
+        }
+    }
+    return primes; // ritorna l'array
+}
+
+generatePrimes(100); // esegue la funzione 100 volte
+printArrayInDivs(primes); // chiama la funzione dandogli come parametro l'array
+
+
+</script>
+   
+</body>
+</html>
