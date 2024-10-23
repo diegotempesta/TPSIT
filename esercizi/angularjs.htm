@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="it" ng-app="myApp">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Tabella 2x5</title>
+        <style>
+            table {
+                border-collapse: collapse;
+            }
+            td {
+                border: 1px solid black;
+                padding: 10px;
+                text-align: center;
+            }
+        </style>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    </head>
+    <body>
+    <table>
+        <tr>
+            <td><im1></im1></td>
+            <td><p>Joker</p></td>
+            <td><im3></im3></td>
+            <td><p>Audi</p></td>
+            <td><im5></im5></td>
+        </tr>
+        <tr>
+            <td><p>Occhio</p></td>
+            <td><im2></im2></td>
+            <td><p>Pollo</p></td>
+            <td><im4></im4></td>
+            <td><p>Antonio Cassano</p></td>
+        </tr>
+    </table>
+    <script>
+    var app = angular.module('myApp', []);
+        app.directive('im1', function() {
+            return {
+                template: '<img src="https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg" width="200px" height="200px">'
+            };
+        });
+        app.directive('im2', function() {
+            return {
+                template: '<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqBLWDgIkIDsuH4p6DTUTUk3X9ZNYrQBks_g&s" width="200px" height="200px">'
+            };
+        });
+        app.directive('im3', function() {
+            return {
+                template: '<img src="https://media-assets.lacucinaitaliana.it/photos/61fabd07d8940f4b9c331a07/4:3/w_1028,h_771,c_limit/come-cucinare-il-pollo.jpg" width="200px" height="200px">'
+            };
+        });
+        app.directive('im4', function() {
+            return {
+                template: '<img src="https://cdn.drivek.com/configurator-imgs/cars/it/Original/AUDI/RS-7-SPORTBACK/38943_HATCHBACK-5-DOORS/audi-rs-7-sportback-2019.jpg" width="200px" height="200px">'
+            };
+        });
+        app.directive('im5', function() {
+            return {
+                template: '<img src="https://upload.wikimedia.org/wikipedia/commons/3/36/Antonio_Cassano_Euro_2012_vs_England.jpg" width="200px" height="200px">'
+            };
+        });
+</script>
+</body>
+</html>
