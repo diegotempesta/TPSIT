@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gioco del Quadrato</title>
     <style>
+        /* Stile generale per il corpo della pagina */
         body {
             font-family: Arial, sans-serif;
             text-align: center;
@@ -12,15 +13,19 @@
             padding: 0;
             background-color: #f0f0f0;
         }
+
+        /* Contenitore del gioco */
         #gameContainer {
             width: 400px;
             height: 400px;
             margin: 20px auto;
             background-color: #e0e0e0;
             position: relative;
-            overflow: hidden;
+            overflow: hidden; /* Previene che il quadrato esca dal contenitore */
             border: 2px solid #333;
         }
+
+        /* Quadrato controllato dal giocatore */
         #player {
             width: 30px;
             height: 30px;
@@ -29,14 +34,20 @@
             top: 0;
             left: 0;
         }
+
+        /* Timer che mostra il tempo rimanente */
         #timer {
             font-size: 24px;
             margin-top: 20px;
         }
+
+        /* Messaggi di stato (es. vittoria, sconfitta) */
         #status {
             font-size: 18px;
             margin-top: 10px;
         }
+
+        /* Bottone per avviare il gioco */
         #startBtn {
             padding: 10px 20px;
             font-size: 16px;
@@ -51,7 +62,6 @@
 </head>
 <body>
 
-
     <h1>Muovi il Quadrato!</h1>
     <div id="gameContainer">
         <div id="player"></div>
@@ -60,65 +70,60 @@
     <div id="status"></div>
     <button id="startBtn">Inizia il Gioco</button>
 
-
     <script>
+        // Riferimenti agli elementi HTML principali
         const gameContainer = document.getElementById('gameContainer');
         const player = document.getElementById('player');
         const timeLeftDisplay = document.getElementById('timeLeft');
         const statusDisplay = document.getElementById('status');
         const startBtn = document.getElementById('startBtn');
 
+        // Variabili di stato del gioco
+        let timer; // Timer del gioco
+        let gameStarted = false; // Stato del gioco (iniziato o no)
+        let timeLeft = 15; // Tempo massimo in secondi
+        let playerPos = { x: 0, y: 0 }; // Posizione del quadrato
 
-        let gameInterval;
-        let timer;
-        let gameStarted = false;
-        let timeLeft = 15;
-        let playerPos = { x: 0, y: 0 };
-
-
-        const moveSpeed = 10;  // La velocità del movimento del quadrato
-
+        const moveSpeed = 10; // Velocità di movimento del quadrato in pixel
 
         // Funzione per iniziare il gioco
         function startGame() {
-            if (gameStarted) return;
+            if (gameStarted) return; // Previene che il gioco venga riavviato durante l'esecuzione
             gameStarted = true;
-            statusDisplay.textContent = 'Gioco in corso...';
+            statusDisplay.textContent = 'Gioco in corso...'; // Messaggio iniziale
 
-
-            // Reset del tempo e delle posizioni
+            // Resetta il timer e la posizione del quadrato
             timeLeft = 15;
             timeLeftDisplay.textContent = timeLeft;
             playerPos = { x: 0, y: 0 };
             player.style.top = playerPos.y + 'px';
             player.style.left = playerPos.x + 'px';
 
-
-            // Avvia il timer
+            // Inizia il conto alla rovescia
             timer = setInterval(() => {
                 timeLeft--;
                 timeLeftDisplay.textContent = timeLeft;
+
+                // Controlla se il tempo è scaduto
                 if (timeLeft <= 0) {
-                    clearInterval(timer);
+                    clearInterval(timer); // Ferma il timer
                     statusDisplay.textContent = 'Tempo scaduto! Hai perso!';
-                    gameStarted = false;
+                    gameStarted = false; // Ritorna allo stato iniziale
                 }
             }, 1000);
 
-
-            // Attiva il movimento del quadrato
+            // Assegna il controllo del movimento alla tastiera
             document.addEventListener('keydown', movePlayer);
         }
 
-
         // Funzione per muovere il quadrato
         function movePlayer(e) {
-            if (!gameStarted) return;
+            if (!gameStarted) return; // Ignora i movimenti se il gioco non è attivo
 
-
+            // Ottiene i limiti dell'area di gioco
             const gameContainerRect = gameContainer.getBoundingClientRect();
 
-
+            // Controlla quale tasto è stato premuto e aggiorna la posizione del quadrato
             if (e.key === 'ArrowUp' && playerPos.y > 0) {
                 playerPos.y -= moveSpeed;
             } else if (e.key === 'ArrowDown' && playerPos.y < gameContainerRect.height - player.offsetHeight) {
@@ -129,24 +134,22 @@
                 playerPos.x += moveSpeed;
             }
 
-
+            // Aggiorna la posizione del quadrato nello stile CSS
             player.style.top = playerPos.y + 'px';
             player.style.left = playerPos.x + 'px';
 
-
-            // Verifica se il quadrato ha raggiunto la fine (angolo in basso a destra)
-            if (playerPos.x >= gameContainerRect.width - player.offsetWidth && playerPos.y >= gameContainerRect.height - player.offsetHeight) {
-                clearInterval(timer);
-                statusDisplay.textContent = 'Hai vinto!';
-                gameStarted = false;
+            // Controlla se il quadrato ha raggiunto l'obiettivo (angolo in basso a destra)
+            if (playerPos.x >= gameContainerRect.width - player.offsetWidth && 
+                playerPos.y >= gameContainerRect.height - player.offsetHeight) {
+                clearInterval(timer); // Ferma il timer
+                statusDisplay.textContent = 'Hai vinto!'; // Messaggio di vittoria
+                gameStarted = false; // Ritorna allo stato iniziale
             }
         }
 
-
-        // Pulsante per iniziare il gioco
+        // Assegna la funzione di avvio al pulsante
         startBtn.addEventListener('click', startGame);
     </script>
-
 
 </body>
 </html>
