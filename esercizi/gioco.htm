@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gioco del Quadrato</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        #gameContainer {
+            width: 400px;
+            height: 400px;
+            margin: 20px auto;
+            background-color: #e0e0e0;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #333;
+        }
+        #player {
+            width: 30px;
+            height: 30px;
+            background-color: #3498db;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        #timer {
+            font-size: 24px;
+            margin-top: 20px;
+        }
+        #status {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+        #startBtn {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #2ecc71;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+
+    <h1>Muovi il Quadrato!</h1>
+    <div id="gameContainer">
+        <div id="player"></div>
+    </div>
+    <div id="timer">Tempo rimasto: <span id="timeLeft">15</span> secondi</div>
+    <div id="status"></div>
+    <button id="startBtn">Inizia il Gioco</button>
+
+
+    <script>
+        const gameContainer = document.getElementById('gameContainer');
+        const player = document.getElementById('player');
+        const timeLeftDisplay = document.getElementById('timeLeft');
+        const statusDisplay = document.getElementById('status');
+        const startBtn = document.getElementById('startBtn');
+
+
+        let gameInterval;
+        let timer;
+        let gameStarted = false;
+        let timeLeft = 15;
+        let playerPos = { x: 0, y: 0 };
+
+
+        const moveSpeed = 10;  // La velocità del movimento del quadrato
+
+
+        // Funzione per iniziare il gioco
+        function startGame() {
+            if (gameStarted) return;
+            gameStarted = true;
+            statusDisplay.textContent = 'Gioco in corso...';
+
+
+            // Reset del tempo e delle posizioni
+            timeLeft = 15;
+            timeLeftDisplay.textContent = timeLeft;
+            playerPos = { x: 0, y: 0 };
+            player.style.top = playerPos.y + 'px';
+            player.style.left = playerPos.x + 'px';
+
+
+            // Avvia il timer
+            timer = setInterval(() => {
+                timeLeft--;
+                timeLeftDisplay.textContent = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    statusDisplay.textContent = 'Tempo scaduto! Hai perso!';
+                    gameStarted = false;
+                }
+            }, 1000);
+
+
+            // Attiva il movimento del quadrato
+            document.addEventListener('keydown', movePlayer);
+        }
+
+
+        // Funzione per muovere il quadrato
+        function movePlayer(e) {
+            if (!gameStarted) return;
+
+
+            const gameContainerRect = gameContainer.getBoundingClientRect();
+
+
+            if (e.key === 'ArrowUp' && playerPos.y > 0) {
+                playerPos.y -= moveSpeed;
+            } else if (e.key === 'ArrowDown' && playerPos.y < gameContainerRect.height - player.offsetHeight) {
+                playerPos.y += moveSpeed;
+            } else if (e.key === 'ArrowLeft' && playerPos.x > 0) {
+                playerPos.x -= moveSpeed;
+            } else if (e.key === 'ArrowRight' && playerPos.x < gameContainerRect.width - player.offsetWidth) {
+                playerPos.x += moveSpeed;
+            }
+
+
+            player.style.top = playerPos.y + 'px';
+            player.style.left = playerPos.x + 'px';
+
+
+            // Verifica se il quadrato ha raggiunto la fine (angolo in basso a destra)
+            if (playerPos.x >= gameContainerRect.width - player.offsetWidth && playerPos.y >= gameContainerRect.height - player.offsetHeight) {
+                clearInterval(timer);
+                statusDisplay.textContent = 'Hai vinto!';
+                gameStarted = false;
+            }
+        }
+
+
+        // Pulsante per iniziare il gioco
+        startBtn.addEventListener('click', startGame);
+    </script>
+
+
+</body>
+</html>
