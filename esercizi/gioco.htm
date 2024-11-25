@@ -27,8 +27,8 @@
 
         /* Quadrato controllato dal giocatore */
         #player {
-            width: 40px;
-            height: 40px;
+            width: 30px;
+            height: 30px;
             background-color: #3498db;
             position: absolute;
             top: 0;
@@ -81,10 +81,10 @@
         // Variabili di stato del gioco
         let timer; // Timer del gioco
         let gameStarted = false; // Stato del gioco (iniziato o no)
-        let timeLeft = 10; // Tempo massimo in secondi
+        let timeLeft = 15; // Tempo massimo in secondi
         let playerPos = { x: 0, y: 0 }; // Posizione del quadrato
 
-        const moveSpeed = 7; // Velocità di movimento del quadrato in pixel
+        const moveSpeed = 10; // Velocità di movimento del quadrato in pixel
 
         // Funzione per iniziare il gioco
         function startGame() {
