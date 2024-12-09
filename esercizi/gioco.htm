@@ -5,58 +5,106 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gioco del Quadrato</title>
     <style>
-        /* Stile generale per il corpo della pagina */
+        /* Stile globale per la pagina */
         body {
             font-family: Arial, sans-serif;
             text-align: center;
             margin: 0;
             padding: 0;
-            background-color: #f0f0f0;
+            background-color: #f0f0f0; /* Sfondo chiaro */
         }
 
-        /* Contenitore del gioco */
+        /* Contenitore principale del gioco */
         #gameContainer {
             width: 400px;
             height: 400px;
             margin: 20px auto;
-            background-color: #e0e0e0;
-            position: relative;
-            overflow: hidden; /* Previene che il quadrato esca dal contenitore */
-            border: 2px solid #333;
+            background-color: #e0e0e0; /* Sfondo del contenitore */
+            position: relative; /* Necessario per posizionare elementi al suo interno */
+            overflow: hidden; /* Impedisce che gli oggetti escano dal contenitore */
+            border: 2px solid #333; /* Bordo scuro */
         }
 
-        /* Quadrato controllato dal giocatore */
+        /* Il quadrato controllato dal giocatore */
         #player {
             width: 30px;
             height: 30px;
-            background-color: #3498db;
-            position: absolute;
+            background-color: #3498db; /* Colore blu */
+            position: absolute; /* Posizione assoluta per permettere il movimento */
             top: 0;
             left: 0;
         }
 
-        /* Timer che mostra il tempo rimanente */
+        /* Stile per una moneta (non utilizzata direttamente, ma generata dinamicamente) */
+        #coin {
+            width: 20px;
+            height: 20px;
+            background-color: gold; /* Colore oro */
+            position: absolute;
+            border-radius: 50%; /* Forma circolare */
+        }
+
+        /* Pulsante per iniziare il gioco */
+        #startBtn {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer; /* Mostra il puntatore per indicare cliccabilità */
+            background-color: #2ecc71; /* Colore verde */
+            border: none;
+            color: white;
+            border-radius: 5px; /* Angoli arrotondati */
+            margin-top: 20px;
+        }
+
+        /* Mostra il livello attuale */
+        #levelDisplay {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+        /* Timer */
         #timer {
             font-size: 24px;
             margin-top: 20px;
         }
 
-        /* Messaggi di stato (es. vittoria, sconfitta) */
+        /* Stato del gioco (es. "Hai perso") */
         #status {
             font-size: 18px;
             margin-top: 10px;
         }
 
-        /* Bottone per avviare il gioco */
-        #startBtn {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            background-color: #2ecc71;
-            border: none;
-            color: white;
-            border-radius: 5px;
+        /* Istruzioni per il giocatore */
+        #instructions {
             margin-top: 20px;
+            font-size: 18px;
+            color: #333; /* Testo scuro */
+        }
+
+        /* Messaggio di vittoria */
+        #winMessage {
+            font-size: 24px;
+            color: #2ecc71; /* Colore verde */
+            margin-top: 30px;
+            display: none; /* Nascosto inizialmente */
+        }
+
+        /* Stile per i punti di partenza e di fine */
+        #startPoint, #endPoint {
+            width: 10px;
+            height: 10px;
+            position: absolute;
+            border-radius: 50%; /* Forma circolare */
+        }
+
+        /* Punto di partenza (verde) */
+        #startPoint {
+            background-color: green;
+        }
+
+        /* Punto di fine (rosso) */
+        #endPoint {
+            background-color: red;
         }
     </style>
 </head>
@@ -64,66 +112,123 @@
 
     <h1>Muovi il Quadrato!</h1>
     <div id="gameContainer">
+        <!-- Punto di partenza -->
+        <div id="startPoint"></div>
+        <!-- Punto di fine -->
+        <div id="endPoint"></div>
+        <!-- Quadrato controllato dal giocatore -->
         <div id="player"></div>
     </div>
-    <div id="timer">Tempo rimasto: <span id="timeLeft">10</span> secondi</div>
+    <!-- Mostra il livello attuale -->
+    <div id="levelDisplay"><span id="level">1</span></div>
+    <!-- Mostra il tempo rimanente -->
+    <div id="timer">Tempo rimasto: <span id="timeLeft">15</span> secondi</div>
+    <!-- Stato del gioco -->
     <div id="status"></div>
+    <!-- Istruzioni per il giocatore -->
+    <div id="instructions">Usa le frecce direzionali (↑ ↓ ← →) per muovere il quadrato e raccogli la monetina!</div>
+    <!-- Pulsante per iniziare il gioco -->
     <button id="startBtn">Inizia il Gioco</button>
+    <!-- Messaggio di vittoria -->
+    <div id="winMessage">Hai vinto!</div>
 
     <script>
-        // Riferimenti agli elementi HTML principali
+        // Seleziona gli elementi principali del gioco
         const gameContainer = document.getElementById('gameContainer');
         const player = document.getElementById('player');
+        const startPoint = document.getElementById('startPoint');
+        const endPoint = document.getElementById('endPoint');
         const timeLeftDisplay = document.getElementById('timeLeft');
         const statusDisplay = document.getElementById('status');
+        const levelDisplay = document.getElementById('level');
         const startBtn = document.getElementById('startBtn');
+        const winMessage = document.getElementById('winMessage');
 
         // Variabili di stato del gioco
-        let timer; // Timer del gioco
-        let gameStarted = false; // Stato del gioco (iniziato o no)
-        let timeLeft = 15; // Tempo massimo in secondi
-        let playerPos = { x: 0, y: 0 }; // Posizione del quadrato
+        let gameStarted = false; // Controlla se il gioco è iniziato
+        let timeLeft = 15; // Tempo iniziale
+        let playerPos = { x: 0, y: 0 }; // Posizione iniziale del giocatore
+        let level = 1; // Livello iniziale
+        let coins = []; // Array delle monete presenti
+        const moveSpeed = 10; // Velocità di movimento del quadrato
 
-        const moveSpeed = 10; // Velocità di movimento del quadrato in pixel
+        // Posiziona il punto di partenza
+        function placeStartPoint() {
+            startPoint.style.left = '10px';
+            startPoint.style.top = '10px';
+        }
 
-        // Funzione per iniziare il gioco
+        // Posiziona il punto di fine
+        function placeEndPoint() {
+            endPoint.style.left = (gameContainer.offsetWidth - 20) + 'px';
+            endPoint.style.top = (gameContainer.offsetHeight - 20) + 'px';
+        }
+
+        // Posiziona un numero di monete pari al livello attuale
+        function placeCoins() {
+            coins = [];
+            const numberOfCoins = level; // Aumenta il numero di monete con il livello
+            for (let i = 0; i < numberOfCoins; i++) {
+                const coin = document.createElement('div'); // Crea una nuova moneta
+                coin.classList.add('coin');
+                coin.style.width = '20px';
+                coin.style.height = '20px';
+                coin.style.backgroundColor = 'gold';
+                coin.style.borderRadius = '50%';
+                coin.style.position = 'absolute';
+
+                // Posizione casuale della moneta
+                const randomX = Math.floor(Math.random() * (gameContainer.offsetWidth - 20));
+                const randomY = Math.floor(Math.random() * (gameContainer.offsetHeight - 20));
+
+                coin.style.left = randomX + 'px';
+                coin.style.top = randomY + 'px';
+
+                // Aggiunge la moneta al contenitore e all'array
+                gameContainer.appendChild(coin);
+                coins.push(coin);
+            }
+        }
+
+        // Inizia il gioco
         function startGame() {
-            if (gameStarted) return; // Previene che il gioco venga riavviato durante l'esecuzione
+            if (gameStarted) return; // Evita di avviare il gioco più volte
             gameStarted = true;
-            statusDisplay.textContent = 'Gioco in corso...'; // Messaggio iniziale
-
-            // Resetta il timer e la posizione del quadrato
-            timeLeft = 10;
+            statusDisplay.textContent = 'Gioco in corso...';
+            level = 1; // Ripristina il livello iniziale
+            timeLeft = 15; // Ripristina il tempo iniziale
+            levelDisplay.textContent = 'Livello: ' + level;
             timeLeftDisplay.textContent = timeLeft;
-            playerPos = { x: 0, y: 0 };
+            playerPos = { x: 0, y: 0 }; // Ripristina la posizione iniziale
             player.style.top = playerPos.y + 'px';
             player.style.left = playerPos.x + 'px';
 
-            // Inizia il conto alla rovescia
-            timer = setInterval(() => {
+            placeStartPoint(); // Posiziona il punto di partenza
+            placeEndPoint(); // Posiziona il punto di fine
+            placeCoins(); // Posiziona le monete
+
+            // Timer per decrementare il tempo
+            const timer = setInterval(() => {
                 timeLeft--;
                 timeLeftDisplay.textContent = timeLeft;
-
-                // Controlla se il tempo è scaduto
                 if (timeLeft <= 0) {
-                    clearInterval(timer); // Ferma il timer
+                    clearInterval(timer);
                     statusDisplay.textContent = 'Tempo scaduto! Hai perso!';
-                    gameStarted = false; // Ritorna allo stato iniziale
+                    gameStarted = false;
                 }
             }, 1000);
 
-            // Assegna il controllo del movimento alla tastiera
+            // Aggiunge l'evento per muovere il giocatore
             document.addEventListener('keydown', movePlayer);
         }
 
-        // Funzione per muovere il quadrato
+        // Muove il quadrato del giocatore
         function movePlayer(e) {
-            if (!gameStarted) return; // Ignora i movimenti se il gioco non è attivo
+            if (!gameStarted) return; // Non fare nulla se il gioco non è attivo
 
-            // Ottiene i limiti dell'area di gioco
             const gameContainerRect = gameContainer.getBoundingClientRect();
 
-            // Controlla quale tasto è stato premuto e aggiorna la posizione del quadrato
+            // Controlla il tasto premuto e aggiorna la posizione
             if (e.key === 'ArrowUp' && playerPos.y > 0) {
                 playerPos.y -= moveSpeed;
             } else if (e.key === 'ArrowDown' && playerPos.y < gameContainerRect.height - player.offsetHeight) {
@@ -134,20 +239,45 @@
                 playerPos.x += moveSpeed;
             }
 
-            // Aggiorna la posizione del quadrato nello stile CSS
+            // Aggiorna la posizione del giocatore
             player.style.top = playerPos.y + 'px';
             player.style.left = playerPos.x + 'px';
 
-            // Controlla se il quadrato ha raggiunto l'obiettivo (angolo in basso a destra)
-            if (playerPos.x >= gameContainerRect.width - player.offsetWidth && 
-                playerPos.y >= gameContainerRect.height - player.offsetHeight) {
-                clearInterval(timer); // Ferma il timer
-                statusDisplay.textContent = 'Hai vinto!'; // Messaggio di vittoria
-                gameStarted = false; // Ritorna allo stato iniziale
+            // Controlla se tutte le monete sono state raccolte
+            for (let i = 0; i < coins.length; i++) {
+                const coin = coins[i];
+                const coinRect = coin.getBoundingClientRect();
+                const playerRect = player.getBoundingClientRect();
+
+                if (playerRect.left < coinRect.right &&
+                    playerRect.right > coinRect.left &&
+                    playerRect.top < coinRect.bottom &&
+                    playerRect.bottom > coinRect.top) {
+                    // Rimuove la moneta raccolta
+                    gameContainer.removeChild(coin);
+                    coins.splice(i, 1);
+                    i--;
+                }
+            }
+
+            // Passa al livello successivo se il giocatore ha raccolto tutte le monete
+            if (playerPos.x >= gameContainerRect.width - player.offsetWidth &&
+                playerPos.y >= gameContainerRect.height - player.offsetHeight &&
+                coins.length === 0) {
+                level++;
+                levelDisplay.textContent = 'Livello: ' + level;
+                timeLeft += 6; // Aggiunge tempo per il nuovo livello
+                timeLeftDisplay.textContent = timeLeft;
+
+                placeCoins(); // Aggiunge nuove monete
+                playerPos = { x: 0, y: 0 }; // Resetta la posizione del giocatore
+                player.style.top = playerPos.y + 'px';
+                player.style.left = playerPos.x + 'px';
+                statusDisplay.textContent = 'Livello ' + level + ' completato!';
             }
         }
 
-        // Assegna la funzione di avvio al pulsante
+        // Avvia il gioco quando il pulsante viene cliccato
         startBtn.addEventListener('click', startGame);
     </script>
 
