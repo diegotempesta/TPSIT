@@ -122,7 +122,7 @@
     <!-- Mostra il livello attuale -->
     <div id="levelDisplay"><span id="level">1</span></div>
     <!-- Mostra il tempo rimanente -->
-    <div id="timer">Tempo rimasto: <span id="timeLeft">15</span> secondi</div>
+    <div id="timer"><span id="name"></span>Tempo rimasto: <span id="timeLeft">15</span> secondi</div>
     <!-- Stato del gioco -->
     <div id="status"></div>
     <!-- Istruzioni per il giocatore -->
@@ -151,6 +151,8 @@
         let level = 1; // Livello iniziale
         let coins = []; // Array delle monete presenti
         const moveSpeed = 10; // Velocità di movimento del quadrato
+        let name = prompt("Nome giocatore: ")
+        document.getElementById("name").innerHTML = name + ": "
 
         // Posiziona il punto di partenza
         function placeStartPoint() {
