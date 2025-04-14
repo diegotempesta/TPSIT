@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Societas</title>
+    <!-- Includo Bootstrap per lo styling -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Stili personalizzati per la foto profilo e l'autore del post */
+        .profile-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+        .post-author {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Include la navbar (definita in 'partials/navbar.ejs') -->
+    <%- include('partials/navbar') %>
+
+    <div class="container my-4">
+        <!-- Se l'utente è loggato, mostra il messaggio di benvenuto -->
+        <% if (username) { %>
+            <p>Benvenuto, <strong><%= username %></strong>!</p>
+        <% } else { %>
+            <!-- Altrimenti, invita l'utente a loggarsi o registrarsi -->
+            <p>Non sei loggato. <a href="/login">Effettua il login</a> o <a href="/signup">Registrati</a></p>
+        <% } %>
+
+        <h1>Societas</h1>
+        <p>Qui puoi creare e condividere i tuoi post-it social.</p>
+
+        <!-- Form per creare un nuovo post; visibile solo agli utenti loggati -->
+        <% if (username) { %>
+        <form method="post" action="/post" enctype="multipart/form-data">
+            <div class="mb-3">
+                <!-- Textarea per il contenuto del post -->
+                <textarea name="content" class="form-control" rows="3" placeholder="Scrivi il tuo post..."></textarea>
+            </div>
+            <div class="mb-3">
+                <!-- Input per caricare un'immagine associata al post -->
+                <label for="image" class="form-label">Carica un'immagine (opzionale):</label>
+                <input type="file" name="image" id="image" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary">Posta</button>
+        </form>
+        <% } else { %>
+            <p>Accedi per poter creare un nuovo post.</p>
+        <% } %>
+
+        <hr>
+
+        <!-- Sezione dei post -->
+        <div id="posts">
+            <% if (posts.length > 0) { %>
+                <!-- Itera sull'array dei post -->
+                <% posts.forEach((post, id) => { 
+                    // Trova l'utente che ha creato il post per mostrare la sua foto profilo
+                    const user = users.find(u => u.username === post.author);
+                    // Se l'utente ha una foto, la usa, altrimenti usa un'immagine di default
+                    const profileImage = user && user.profileImage ? user.profileImage : '/img/default-profile.png';
+                %>
+                    <div class="card mb-4">
+                        <div class="card-body">
+
+                            <!-- Sezione autore: mostra l'immagine del profilo e l'username -->
+                            <div class="post-author">
+                                <img src="<%= profileImage %>" alt="foto profilo" class="profile-img" />
+                                <strong><%= post.author %></strong>
+                            </div>
+
+                            <!-- Contenuto del post -->
+                            <p><%= post.content %></p>
+                            <% if (post.image) { %>
+                                <!-- Se il post ha un'immagine, la mostra -->
+                                <img src="<%= post.image %>" alt="Immagine del post" class="img-fluid mb-2">
+                            <% } %>
+
+                            <!-- Sezione like/dislike -->
+                            <div class="mb-2">
+                                <% 
+                                    // Verifica se l'utente loggato ha già messo like o dislike al post
+                                    let liked = post.likedBy && post.likedBy.includes(username);
+                                    let disliked = post.dislikedBy && post.dislikedBy.includes(username);
+                                %>
+
+                                <% if (!liked) { %>
+                                    <!-- Se l'utente non ha messo like, mostra il pulsante per il like -->
+                                    <form method="post" action="/like/<%= post.id %>" style="display:inline;">
+                                        <button class="btn btn-success btn-sm">👍 <%= post.likes %></button>
+                                    </form>
+                                <% } else { %>
+                                    <!-- Se l'utente ha messo like, mostra il pulsante disabilitato -->
+                                    <button class="btn btn-outline-success btn-sm" disabled>👍 <%= post.likes %></button>
+                                <% } %>
+
+                                <% if (!disliked) { %>
+                                    <!-- Se l'utente non ha messo dislike, mostra il pulsante per il dislike -->
+                                    <form method="post" action="/dislike/<%= post.id %>" style="display:inline;">
+                                        <button class="btn btn-danger btn-sm">👎 <%= post.dislikes %></button>
+                                    </form>
+                                <% } else { %>
+                                    <!-- Se l'utente ha messo dislike, mostra il pulsante disabilitato -->
+                                    <button class="btn btn-outline-danger btn-sm" disabled>👎 <%= post.dislikes %></button>
+                                <% } %>
+                            </div>
+
+                            <!-- Sezione recensione -->
+                            <div>
+                                <% 
+                                    // Verifica se l'utente loggato ha già votato in questo post
+                                    let hasRated = false;
+                                    post.rating.forEach(r => {
+                                        if (r.user === username) hasRated = true;
+                                    });
+                                %>
+
+                                <% if (!hasRated && username) { %>
+                                    <!-- Se non ha già votato, mostra il form per inviare la recensione -->
+                                    <form method="post" action="/rate/<%= post.id %>">
+                                        <label>Recensione:</label>
+                                        <select name="rating">
+                                            <% for (let i = 1; i <= 5; i++) { %>
+                                                <option value="<%= i %>"><%= i %> ⭐</option>
+                                            <% } %>
+                                        </select>
+                                        <button class="btn btn-primary btn-sm">Invia</button>
+                                    </form>
+                                <% } else if (hasRated) { %>
+                                    <!-- Se ha già votato, mostra un messaggio -->
+                                    <p class="text-success">Hai già recensito questo post.</p>
+                                <% } %>
+                            </div>
+
+                            <!-- Sezione commenti -->
+                            <hr>
+                            <h6>Commenti:</h6>
+                            <% post.comments.forEach(comment => { %>
+                                <!-- Per ogni commento mostra autore e testo -->
+                                <p><strong><%= comment.author %></strong>: <%= comment.text %></p>
+                            <% }) %>
+
+                            <% if (username) { %>
+                                <!-- Form per aggiungere un nuovo commento al post -->
+                                <form method="post" action="/comment/<%= post.id %>">
+                                    <input type="text" name="comment" class="form-control" placeholder="Scrivi un commento..." />
+                                    <button type="submit" class="btn btn-outline-secondary btn-sm mt-2">Invia</button>
+                                </form>
+                            <% } %>
+
+                            <!-- Informazioni sul post -->
+                            <p class="text-muted mt-2">Postato da <strong><%= post.author %></strong> il <%= new Date(post.createdAt).toLocaleString() %></p>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <p>Nessun post ancora disponibile.</p>
+            <% } %>
+        </div>
+    </div>
+
+    <!-- Include il footer (definito in 'partials/footer.ejs') -->
+    <%- include('partials/footer') %>
+
+    <!-- Includo Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
