@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="it-IT">
+    <head>
+    <meta charset="UTF-8">
+        <meta name="Description" content="Metodi MATH">
+        <meta name="keywords" content="metodi MATH, matematica, java math, math, math java"> <!-- parole chiavi utili al motore di ricerca per trovare il sito -->
+        <meta name="GENERATOR" content="Visual Studio Code"> <!-- programma con cui è stato scritto il codice -->
+        <meta name="author" content="Diego Tempesta"> <!-- autore del codice -->
+        <title>Metodi MATH</title>
+        <style>
+            * {
+                font-family: Arial, Helvetica, sans-serif;
+            }
+            table, th, td, tr {
+                border: 1px solid black;
+                border-collapse: collapse;
+                padding: 10px;
+            }
+            table {
+                width: 100%;
+            }
+            td:nth-child(even), th:nth-child(even) {
+                background-color: rgb(224, 205, 29);
+            }
+            td:hover{
+                background-color: rgba(230, 158, 25, 0.664);
+            }
+        </style>
+    </head>
+    <body>
+        <table>
+            <tr><th>Metodo</th><th>Descrizione metodo</th><th>Esempio</th></tr>
+            <tr>
+                <td>Proprietà matematiche</td>
+                <td>Javascript provede 8 costanti matematiche utilizzabili con Math: Math.E (numero di eulero), Math.PI (pi greco), Math.SQRT2 (radice quadrata di 2), Math.SQRT1_2 (radice quadrata di 1/2), <br>Math.LN2 (logaritmo naturale di 2), Math.LN10 (logaritmo naturale di 10), Math.LOG2E (logaritmo base 2 del numero di Nepero) e Math.LOG10E (logaritmo base 10 del numero di Nepero)</td>
+                <td><button onclick="metodo(1)">Stampa</button></td>
+            </tr>
+            <tr>
+                <td>abs(x)</td>
+                <td>Ritorna il valore assoluto di un numero</td>
+                <td><button onclick="metodo(2)">Esegui</button></td>
+            </tr>
+            <tr>
+                <td>cbrt(x)</td>
+                <td>Ritorna la radice cubica di un numero</td>
+                <td><button onclick="metodo(3)">Esegui</button></td>
+            </tr>
+            <tr>
+                <td>ceil(x)</td>
+                <td>Ritorna il numero arrotondato per eccesso</td>
+                <td><button onclick="metodo(4)">Esegui</button></td>
+            </tr>
+            <tr>
+                <td>cos(x)</td>
+                <td>Ritorna il coseno di un numero. Il numero deve essere scritto in radianti</td>
+                <td><button onclick="metodo(5)">Esegui</button></td>
+            </tr>
+            <tr>
+                <td>floor(x)</td>
+                <td>Ritorna il numero arrotondato per difetto</td>
+                <td><button onclick="metodo(6)">Esegui</button></td>
+            </tr>
+            <tr>
+                <td>log(x)</td>
+                <td>Ritorna il logaritmo naturale di un numero</td>
+                <td><button onclick="metodo(7)">Esegui</button></td>
+            </tr>
+            <tr>
+                <td>max(x1, x2...) e min(x1, x2...)</td>
+                <td>Ritorna il massimo (max) o il minimo (min) tra 2 o più numeri</td>
+                <td><button onclick="metodo(8)">Esegui</button></td>
+            </tr>
+            <tr>
+                <td>pow(x, y)</td>
+                <td>Ritorna il numero x elevato per y</td>
+                <td><button onclick="metodo(9)">Esegui</button></td>
+            </tr>
+            <tr>
+                <td>random()</td>
+                <td>Ritorna un numero tra 0 e 1. Moltiplicandolo per il risultato della formula (max - min) e poi sommando il minimo possiamo generare un numero compreso tra due numeri a piacere</td>
+                <td><button onclick="metodo(10)">Esegui</button></td>
+            </tr>
+            <tr>
+                <td>round(x)</td>
+                <td>Ritorna il numero arrotondato al numero intero più vicino</td>
+                <td><button onclick="metodo(11)">Esegui</button></td>
+            </tr>
+            <tr>
+                <td>sign(x)</td>
+                <td>Ritorna il segno di un numero (1 se è positivo, -1 se è negativo)</td>
+                <td><button onclick="metodo(12)">Esegui</button></td>
+            </tr>
+            <tr>
+                <td>sin(x)</td>
+                <td>Ritorna il seno di un numero. Come con cos(), il numero deve essere scritto in radianti</td>
+                <td><button onclick="metodo(13)">Esegui</button></td>
+            </tr>
+            <tr>
+                <td>sqrt(x)</td>
+                <td>Ritorna la radice quadrata di un numero</td>
+                <td><button onclick="metodo(14)">Esegui</button></td>
+            </tr>
+            <tr>
+                <td>tan(x)</td>
+                <td>Ritorna la tangente di un numero. Come con cos() e sen(), il numero deve essere scritto in radianti</td>
+                <td><button onclick="metodo(15)">Esegui</button></td>
+            </tr>
+            <tr>
+                <td>trunc(x)</td>
+                <td>Ritorna la parte intera di un numero</td>
+                <td><button onclick="metodo(16)">Esegui</button></td>
+            </tr>
+        </table>
+        <script>
+            function metodo(which) {
+                switch(which) {
+                    case 1:
+                        alert("Numero di Nepero: " + Math.E + "\nPi greco: " + Math.PI + "\nRadice quadrata di 2: " + Math.SQRT2 + "\nRadice quadrata di un mezzo: " + Math.SQRT1_2 + "\nLogaritmo naturale di 2: " + Math.LN2 + "\nLogaritmo naturale di 10: " + Math.LN10 + "\nLogaritmo base 2 del numero di Nepero: " + Math.LOG2E + "\nLogaritmo base 10 del numero di Nepero: " + Math.LOG10E)
+                        break;
+                    case 2:
+                        let n1 = prompt("Scrivi un numero: ")
+                        alert("Valore assoluto del numero: " + Math.abs(n1))
+                        break;
+                    case 3:
+                        let n2 = prompt("Scrivi un numero: ")
+                        alert("Radice quadrata del numero: " + Math.cbrt(n2))
+                        break;
+                    case 4:
+                        let n3 = prompt("Scrivi un numero decimale: ")
+                        alert("Numero arrotondato per eccesso: " + Math.ceil(n3))
+                        break;
+                    case 5:
+                        let n4 = prompt("Scrivi un numero (verrà convertito in radianti automaticamente): ")
+                        alert("Coseno del numero: " + Math.cos(n4 * Math.PI / 180))
+                        break;
+                    case 6:
+                        let n5 = prompt("Scrivi un numero decimale: ")
+                        alert("Numero arrotondato per difetto: " + Math.floor(n5))
+                        break;
+                    case 7:
+                        let n6 = prompt("Scrivi un numero: ")
+                        alert("Logaritmo del numero: " + Math.log(n6))
+                        break;
+                    case 8:
+                        let n9 = prompt("Scrivi un numero: ")
+                        let n10 = prompt("Scrivi un numero: ")
+                        alert("Massimo: " + Math.max(n9, n10) + "\nMinimo: " + Math.min(n9, n10))
+                        break;
+                    case 9:
+                        let n7 = prompt("Scrivi il numero da elevare: ")
+                        let n8 = prompt("Scrivi l'esponente: ")
+                        alert("Numero elevato per l'esponente: " + Math.pow(n7, n8))
+                        break;
+                    case 10:
+                        let n11 = prompt("Scrivi il numero minimo: ")
+                        let n12 = prompt("Scrivi un numero massimo: ")
+                        alert("Numero tra " + n11 + " e " + n12 + ": " + Math.floor(Math.random() * (n12 - n11) + n11))
+                        break;
+                    case 11:
+                        let n13 = prompt("Scrivi un numero decimale: ")
+                        alert("Numero arrotondato: " + Math.round(n13))
+                        break;
+                    case 12:
+                        let n14 = prompt("Scrivi un numero: ")
+                        alert("Segno del numero: " + Math.sign(n14))
+                        break;
+                    case 13:
+                        let n15 = prompt("Scrivi un numero (verrà convertito in radianti automaticamente): ")
+                        alert("Seno del numero: " + Math.sin(n15 * Math.PI / 180))
+                        break;
+                    case 14:
+                        let n16 = prompt("Scrivi un numero: ")
+                        alert("Radice quadrata del numero: " + Math.sqrt(n16))
+                        break;
+                    case 15:
+                        let n17 = prompt("Scrivi un numero (verrà convertito in radianti automaticamente): ")
+                        alert("Tangente del numero: " + Math.tan(n17 * Math.PI / 180))
+                        break;
+                    case 16:
+                        let n18 = prompt("Scrivi un numero decimale: ")
+                        alert("Parte intera del numero: " + Math.trunc(n18))
+                        break;
+                    default:
+                        alert("Il metodo è scritto male o non esiste")
+                        break;
+                }
+            }
+        </script>
+    </body>
+</html>
