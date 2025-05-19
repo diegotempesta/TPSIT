@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="it-IT">
+<head>
+  <meta charset="UTF-8">
+	<meta name="Description" content="Metodi delle stringhe">
+	<meta name="keywords" content="metodi stringhe, metodi, stringhe, stringa, string"> <!-- parole chiavi utili al motore di ricerca per trovare il sito -->
+	<meta name="GENERATOR" content="Visual Studio Code"> <!-- programma con cui è stato scritto il codice -->
+	<meta name="author" content="Diego Tempesta"> <!-- autore del codice -->
+  <title>Metodi delle stringhe</title>
+  <style>
+    * {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    table, th, td, tr {
+        border: 1px solid black;
+        border-collapse: collapse;
+        padding: 10px;
+    }
+    table {
+        width: 100%;
+    }
+    td:hover{
+        background-color: rgb(152, 245, 252);
+    }
+    td:nth-child(even), th:nth-child(even) {
+        background-color: rgb(220, 236, 250);
+    }
+    input {
+        width: 230px;
+    }
+    
+  </style>
+</head>
+<body>
+    <h1>Metodi delle stringhe</h1>
+  <table>
+    <tr><th>Metodo</th><th>Descrizione metodo</th><th>Esempio</th></tr>
+    <tr>
+        <td>length</td>
+        <td>Ritorna la lunghezza della Stringa</td>
+        <td>
+            <input type="text" id="input1" placeholder="Scrivi una stringa"><br>
+            <button onclick="metodo(1)">Esegui</button>
+        </td>
+    </tr>
+    <tr>
+        <td>charAt()</td>
+        <td>Ritorna il carattere presente nella posizione indicata</td>
+        <td>
+            <input type="text" id="input2" placeholder="Scrivi una stringa"><br>
+            <input type="number" id="input3" placeholder="Scrivi la posizione"><br>
+            <button onclick="metodo(2)">Esegui</button>
+        </td>
+    </tr>
+    <tr>
+        <td>slice()</td>
+        <td>Estrae parte di una stringa e la ritorna</td>
+        <td>
+            <input type="text" id="input4" placeholder="Scrivi una stringa"><br>
+            <input type="number" id="input5" placeholder="Scrivi una posizione dove iniziare"><br>
+            <input type="number" id="input6" placeholder="Scrivi una posizione dove finire"><br>
+            <button onclick="metodo(3)">Esegui</button>
+        </td>
+    </tr>
+    <tr>
+        <td>substring()</td>
+        <td>Estrae parte di una stringa e la ritorna. Non è necessario inserire tutte e due le posizioni</td>
+        <td>
+            <input type="text" id="input7" placeholder="Scrivi una stringa"><br>
+            <input type="number" id="input8" placeholder="Scrivi una posizione dove iniziare"><br>
+            <!--<input type="number" id="input9" placeholder="Scrivi una posizione dove finire">-->
+            <button onclick="metodo(4)">Esegui</button>
+        </td>
+    </tr>
+    <tr>
+        <td>toUpperCase()</td>
+        <td>Converte la stringa in maiuscolo</td>
+        <td>
+            <input type="text" id="input10" placeholder="Scrivi una stringa"><br>
+            <button onclick="metodo(5)">Esegui</button>
+        </td>
+    </tr>
+    <tr>
+        <td>toLowerCase()</td>
+        <td>Converte la stringa in minuscolo</td>
+        <td>
+            <input type="text" id="input11" placeholder="Scrivi una stringa"><br>
+            <button onclick="metodo(6)">Esegui</button>
+        </td>
+    </tr>
+    <tr>
+        <td>concat()</td>
+        <td>Prende due stringhe e le concatena. Simile all'operatore +</td>
+        <td>
+            <input type="text" id="input12" placeholder="Scrivi una stringa"><br>
+            <input type="text" id="input13" placeholder="Scrivi una stringa"><br>
+            <button onclick="metodo(7)">Esegui</button>
+        </td>
+    </tr>
+    <tr>
+        <td>trim()</td>
+        <td>Toglie gli spazi ai lati della stringa</td>
+        <td>
+            <input type="text" id="input14" placeholder="Scrivi una stringa"><br>
+            <button onclick="metodo(8)">Esegui</button>
+        </td>
+    </tr>
+    <tr>
+        <td>padStart()</td>
+        <td>Aggiunge una stringa all'inizio della stringa fino ad una certa lunghezza. padEnd() fa la stessa cosa ma alla fine della stringa</td>
+        <td>
+            <input type="text" id="input15" placeholder="Scrivi una stringa"><br>
+            <input type="text" id="input16" placeholder="Scrivi una stringa"><br>
+            <input type="number" id="input17" placeholder="Scrivi un numero"><br>
+            <button onclick="metodo(9)">Esegui</button>
+        </td>
+    </tr>
+    <tr>
+        <td>repeat()</td>
+        <td>Ritorna una stringa più volte</td>
+        <td>
+            <input type="text" id="input18" placeholder="Scrivi una stringa"><br>
+            <button onclick="metodo(10)">Esegui</button>
+        </td>
+    </tr>
+    <tr>
+        <td>replace()</td>
+        <td>Rimpiazza una parte della stringa con un altra</td>
+        <td>
+            <p id="rimpiazzare">Ciao mondo</p>
+            <input type="text" id="input19" placeholder="Scrivi una parola che rimpiazza mondo"><br>
+            <button onclick="metodo(11)">Esegui</button>
+        </td>
+    </tr>
+    <tr>
+        <td>split()</td>
+        <td>Divide una stringa in un'array</td>
+        <td>
+            <input type="text" id="input20" placeholder="Scrivi una stringa"><br>
+            <button onclick="metodo(12)">Esegui</button>
+        </td>
+    </tr>
+  </table>
+  <script>
+    let input1 = document.getElementById("input1");
+    let input2 = document.getElementById("input2");
+    let input3 = document.getElementById("input3");
+    let input4 = document.getElementById("input4");
+    let input5 = document.getElementById("input5");
+    let input6 = document.getElementById("input6");
+    let input7 = document.getElementById("input7");
+    let input8 = document.getElementById("input8");
+    //let input9 = document.getElementById("input9");
+    let input10 = document.getElementById("input10");
+    let input11 = document.getElementById("input11");
+    let input12 = document.getElementById("input12");
+    let input13 = document.getElementById("input13");
+    let input14 = document.getElementById("input14");
+    let input15 = document.getElementById("input15");
+    let input16 = document.getElementById("input16");
+    let input17 = document.getElementById("input17");
+    let input18 = document.getElementById("input18");
+    let input19 = document.getElementById("input19");
+    let input20 = document.getElementById("input20");
+    function metodo(method) {
+        switch(method) {
+            case 1:
+                alert("Lunghezza stringa: " + input1.value.length);
+                break;
+            case 2:
+                alert("Carattere alla posizione " + input3.value + ": " + input2.value.charAt(input3.value))
+                break;
+            case 3:
+                alert("Sottostringa tra " + input5.value + " e " + input6.value + ": " + input4.value.slice(input5.value, input6.value))
+                break;
+            case 4:
+                alert("Sottostringa che inizia dalla posizione " + input8.value + ": " + input7.value.substring(input8.value))
+                break;
+            case 5:
+                alert("Stringa in maiuscolo: " + input10.value.toUpperCase())
+                break;
+            case 6:
+                alert("Stringa in minuscolo: " + input11.value.toLowerCase())
+                break;
+            case 7:
+                alert("Stringhe concatenate: " + input12.value.concat(input13.value))
+                break;
+            case 8:
+                alert("Stringa senza spazi: " + input14.value.trim())
+                break;
+            case 9:
+                alert("Stringa con altra stringa all'inizio: " + input15.value.padStart(input17.value, input16.value))
+                break;
+            case 10:
+                alert("Stringa ripetuta 3 volte: " + input18.value.repeat(3))
+                break;
+            case 11:
+                document.getElementById("rimpiazzare").innerHTML = document.getElementById("rimpiazzare").innerHTML.replace("mondo", input19.value)
+                break;
+            case 12:
+                let array = input20.value.split("")
+                alert("Array: " + array)
+                break;
+            default:
+                alert("Non è stato inserito il metodo corretto");
+                break;
+        }
+    }
+  </script>
+</body>
+</html>
