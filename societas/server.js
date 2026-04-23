@@ -5,6 +5,7 @@ const path = require('path');                     // Modulo per gestire i percor
 const fs = require('fs');                         // Modulo per operazioni sul filesystem
 const session = require('express-session');       // Middleware per gestire le sessioni
 const multer = require('multer');                 // Middleware per gestire l'upload dei file
+const WebSocket = require('ws');                 
 
 const app = express();                            // Inizializzazione dell'app Express
 const PORT = 3000;                                // Porta su cui il server ascolterà
@@ -172,6 +173,11 @@ app.post('/update-profile', upload.single('profileImage'), (req, res) => {
     }
 
     writeUsers(users);  // Salva le modifiche nel file JSON
+    broadcast({
+        type: 'update_profile',
+        username,
+        profileImage: users[userIndex].profileImage
+    });
     res.redirect('/');
 });
 
@@ -212,6 +218,10 @@ app.post('/post', upload.single('image'), (req, res) => {
     });
 
     writePosts(posts); // Salva i post aggiornati
+    broadcast({
+        type: 'new_post',
+        post: posts[posts.length - 1]
+    });
     res.redirect('/');
 });
 
@@ -231,6 +241,11 @@ app.post('/comment/:id', (req, res) => {
     // Aggiunge il commento all'array dei commenti del post
     post.comments.push({ author, text: commentText });
     writePosts(posts);  // Salva i post aggiornati
+    broadcast({
+        type: 'new_comment',
+        postId: id,
+        comment: { author, text: commentText }
+    });
     res.redirect('/');
 });
 
@@ -256,6 +271,11 @@ app.post('/rate/:id', (req, res) => {
     // Aggiunge il voto (recensione) al post
     post.rating.push({ user, stars: rating });
     writePosts(posts); // Salva i post aggiornati
+    broadcast({
+        type: 'update_rating',
+        postId: id,
+        rating: post.rating
+    });
     res.redirect('/');
 });
 
@@ -290,6 +310,12 @@ app.post('/like/:id', (req, res) => {
     }
 
     writePosts(posts); // Salva i post aggiornati
+    broadcast({
+        type: 'update_post',
+        postId: id,
+        likes: post.likes,
+        dislikes: post.dislikes
+    });
     res.redirect('/');
 });
 
@@ -324,6 +350,12 @@ app.post('/dislike/:id', (req, res) => {
     }
 
     writePosts(posts); // Salva i post aggiornati
+    broadcast({
+        type: 'update_post',
+        postId: id,
+        likes: post.likes,
+        dislikes: post.dislikes
+    });
     res.redirect('/');
 });
 
@@ -335,6 +367,29 @@ app.get('/logout', (req, res) => {
 });
 
 // Avvio del server sulla porta specificata
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
     console.log(`Server in esecuzione su http://localhost:${PORT}`);
 });
+
+// WebSocket server
+const wss = new WebSocket.Server({ server });
+
+// connessioni
+wss.on('connection', (ws) => {
+    console.log('Client connesso');
+
+    ws.on('close', () => {
+        console.log('Client disconnesso');
+    });
+});
+
+// funzione broadcast
+function broadcast(data) {
+    const msg = JSON.stringify(data);
+
+    wss.clients.forEach(client => {
+        if (client.readyState === WebSocket.OPEN) {
+            client.send(msg);
+        }
+    });
+}
