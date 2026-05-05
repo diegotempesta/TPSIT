@@ -50,6 +50,16 @@ const upload = multer({ storage }); // Inizializza multer con la configurazione 
 // Percorsi dei file JSON per salvare gli utenti e i post
 const usersFile = path.join(__dirname, 'users.json');
 const postsFile = path.join(__dirname, 'posts.json');
+const messagesFile = path.join(__dirname, 'messages.json');
+
+function readMessages() {
+    if (!fs.existsSync(messagesFile)) return [];
+    return JSON.parse(fs.readFileSync(messagesFile));
+}
+
+function writeMessages(messages) {
+    fs.writeFileSync(messagesFile, JSON.stringify(messages, null, 2));
+}
 
 // Funzione per leggere gli utenti dal file JSON
 function readUsers() {
@@ -284,7 +294,6 @@ app.post('/like/:id', (req, res) => {
     if (!req.session.username) {
         return res.send('Effettua il login per votare. <a href="/login">Login</a>');
     }
-
     let posts = readPosts();
     const id = parseInt(req.params.id);         // Converte l'ID del post in numero
     const post = posts.find(p => p.id === id);     // Cerca il post corrispondente
@@ -359,6 +368,19 @@ app.post('/dislike/:id', (req, res) => {
     res.redirect('/');
 });
 
+app.get('/chat', (req, res) => {
+    if (!req.session.username) {
+        return res.redirect('/login');
+    }
+
+    const users = readUsers().filter(u => u.username !== req.session.username);
+
+    res.render('chat', {
+        users,
+        username: req.session.username
+    });
+});
+
 // Rotta per il logout: distrugge la sessione e reindirizza alla home
 app.get('/logout', (req, res) => {
     req.session.destroy(() => {
@@ -374,15 +396,90 @@ const server = app.listen(PORT, () => {
 // WebSocket server
 const wss = new WebSocket.Server({ server });
 
-// connessioni
-wss.on('connection', (ws) => {
+const clients = new Map(); // username -> ws
+
+wss.on('connection', (ws, req) => {
     console.log('Client connesso');
 
+    let currentUser = null;
+
+    ws.on('message', (message) => {
+        const data = JSON.parse(message);
+
+        // 🔐 AUTH
+        if (data.type === 'auth') {
+            currentUser = data.username;
+            clients.set(currentUser, ws); // 🔥 IMPORTANTISSIMO
+            console.log('Autenticato:', currentUser);
+            return;
+        }
+
+        // 📜 CARICAMENTO CHAT
+        if (data.type === 'load_messages') {
+            const otherUser = data.with;
+
+            if (!currentUser) return;
+
+            const messages = readMessages();
+
+            const conversation = messages
+                .filter(m =>
+                    (m.from === currentUser && m.to === otherUser) ||
+                    (m.from === otherUser && m.to === currentUser)
+                )
+                .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+
+            console.log('Caricamento chat:', currentUser, otherUser);
+
+            ws.send(JSON.stringify({
+                type: 'load_messages',
+                messages: conversation
+            }));
+
+            return;
+        }
+
+        // 💬 INVIO MESSAGGIO
+        if (data.type === 'private_message') {
+            const { to, text } = data;
+
+            if (!currentUser) return;
+
+            const msg = {
+                id: Date.now(),
+                from: currentUser,
+                to,
+                text,
+                createdAt: new Date().toISOString()
+            };
+
+            const messages = readMessages();
+            messages.push(msg);
+            writeMessages(messages);
+
+            const receiver = clients.get(to);
+
+            if (receiver && receiver.readyState === WebSocket.OPEN) {
+                receiver.send(JSON.stringify({
+                    type: 'private_message',
+                    message: msg
+                }));
+            }
+
+            ws.send(JSON.stringify({
+                type: 'private_message',
+                message: msg
+            }));
+        }
+    });
+
     ws.on('close', () => {
+        if (currentUser) {
+            clients.delete(currentUser);
+        }
         console.log('Client disconnesso');
     });
 });
-
 // funzione broadcast
 function broadcast(data) {
     const msg = JSON.stringify(data);
